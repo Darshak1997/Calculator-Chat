@@ -1,5 +1,42 @@
-.App {
+
+
+.split .left {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+  left: 0;
+  background-color: #2980b9;
   text-align: center;
+}
+
+.split .right {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+  right: 0;
+  background-color: #2980b9;
+}
+
+.calc-wrapper{
+  /* display: inline; */
+  margin-left: 100px;
+  margin-top: 50px;
+  width: 500px;
+  height:800px;
+
+}
+
+.row{
+  display: flex;
+  width: 100%;
 }
 
 .App-logo {
@@ -27,6 +64,44 @@
 .App-link {
   color: #61dafb;
 }
+
+.container{
+  /* position: relative; */
+  margin-top: 50px;
+  margin-right: 232px;
+}
+
+.messages{
+  text-align: center;
+  text-decoration: #282c34;
+  font-size: medium;
+  font-weight: normal;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  /* box-sizing: border-box; */
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  font-size: 16px;
+  margin-left: 0%;
+  background-color: white;
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
 
 @keyframes App-logo-spin {
   from {
