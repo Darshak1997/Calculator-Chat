@@ -13,7 +13,7 @@ import Button from 'react-bootstrap/Button';
 // let HOST = window.location.origin.replace(/^http/, 'ws')
 const Html5WebSocket = require('html5-websocket');
 const ReconnectingWebSocket = require('reconnecting-websocket');
-let isServerLocal = true;
+let isServerLocal = False;
 let ws_host = 'https://calc-chat-app.herokuapp.com/';
 let ws_port = '80';
 if (isServerLocal == true) {
