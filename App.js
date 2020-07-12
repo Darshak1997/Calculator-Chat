@@ -13,8 +13,8 @@ import Button from 'react-bootstrap/Button';
 // let HOST = window.location.origin.replace(/^http/, 'ws')
 const Html5WebSocket = require('html5-websocket');
 const ReconnectingWebSocket = require('reconnecting-websocket');
-let isServerLocal = true;
-let ws_host = 'smartgeometry.herokuapp.com';
+let isServerLocal = false;
+let ws_host = 'https://calc-chat-app.herokuapp.com/';
 let ws_port = '80';
 if (isServerLocal == true) {
     let ws_host = 'localhost';
@@ -22,9 +22,9 @@ if (isServerLocal == true) {
 }
 // const HOST = 'ws://localhost:3030'
 
-const options = { constructor: Html5WebSocket };
-// const rws = new ReconnectingWebSocket('ws://' + ws_host + ':' + ws_port + '/ws', undefined, options);
-// const rws = 'ws://' + ws_host + ':' + ws_port + '/ws';
+// const options = { constructor: Html5WebSocket };
+// const rws = new ReconnectingWebSocket('ws://' + ws_host + ':' + ws_port + '/ws', undefined);
+const rws = new WebSocket('ws://' + ws_host + ':' + ws_port + '/ws');
 // rws.timeout = 1000;
 
 class App extends React.Component {
@@ -43,41 +43,36 @@ class App extends React.Component {
   // ws = new WebSocket(HOST)
 
   componentDidMount() {
-    // this.ws.onopen = () => {
-    //   // on connecting, do nothing but log it to the console
-    //   console.log('connected')
-    // }
 
     rws.onopen = () => {
         // on connecting, do nothing but log it to the console
         console.log('connected')
       }
 
-    // this.ws.onmessage = evt => {
-    //   // on receiving a message, add it to the list of messages
-    //   const val = JSON.parse(evt.data)
-    //   this.addMessage(val)
-    // }
+    rws.onmessage = evt => {
+      // on receiving a message, add it to the list of messages
+      const val = JSON.parse(evt.data)
+      this.addMessage(val)
+    }
 
-    // this.ws.onclose = () => {
-    //   console.log('disconnected')
-    //   // automatically try to reconnect on connection loss
-    //   this.setState({
-    //     ws: new WebSocket(HOST),
-    //   })
-    // }
+    rws.onclose = () => {
+      console.log('disconnected')
+      // automatically try to reconnect on connection loss
+      this.setState({
+        rws: new WebSocket('ws://' + ws_host + ':' + ws_port + '/ws'),
+      })
+    }
   }
 
-  propTypes = {
-    onSubmitMessage: PropTypes.func.isRequired,
-  }
+  // propTypes = {
+  //   onSubmitMessage: PropTypes.func.isRequired,
+  // }
 
   addToInput = val => {
     this.setState({input: this.state.input + val});
   }
 
   addMessage = val => {
-    console.log(val["message"])
     this.setState(
       {messages1:  [val, ...this.state.messages1]}
       );
@@ -86,8 +81,7 @@ class App extends React.Component {
   handleEqual = messageString => {
     let message1 = this.state.input + ' = ' + math.evaluate(this.state.input)
     const data = { name: this.state.name, message: message1 }
-    console.log(data);
-    this.ws.send(JSON.stringify(data))
+    rws.send(JSON.stringify(data))
     this.setState(
       { input: message1,
         messages:  [data, ...this.state.messages],
@@ -95,13 +89,6 @@ class App extends React.Component {
       );
       
   }
-
-  // submitMessage = messageString => {
-  //   // on submitting the ChatInput form, send the message, add it to the list and reset the input
-  //   const data = { name: this.state.name, message: messageString }
-  //   this.ws.send(JSON.stringify(data))
-  //   this.addMessage(data)
-  // }
 
   render() {
     return (
