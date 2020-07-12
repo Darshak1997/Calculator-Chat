@@ -15,7 +15,7 @@ const Html5WebSocket = require('html5-websocket');
 const ReconnectingWebSocket = require('reconnecting-websocket');
 let isServerLocal = false;
 let ws_host = 'https://calc-chat-app.herokuapp.com/';
-let ws_port = '80';
+let ws_port = process.env.PORT || 80;
 if (isServerLocal == true) {
     let ws_host = 'localhost';
     let ws_port = '3030';
