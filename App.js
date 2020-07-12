@@ -10,7 +10,22 @@ import PropTypes from 'prop-types'
 import Button from 'react-bootstrap/Button';
 // import * as math from 'https://unpkg.com/mathjs@6.2.3/dist/math.js';
 
-const URL = 'ws://localhost:3030'
+// let HOST = window.location.origin.replace(/^http/, 'ws')
+const Html5WebSocket = require('html5-websocket');
+const ReconnectingWebSocket = require('reconnecting-websocket');
+let isServerLocal = true;
+let ws_host = 'smartgeometry.herokuapp.com';
+let ws_port = '80';
+if (isServerLocal == true) {
+    let ws_host = 'localhost';
+    let ws_port = '3030';
+}
+// const HOST = 'ws://localhost:3030'
+
+const options = { constructor: Html5WebSocket };
+// const rws = new ReconnectingWebSocket('ws://' + ws_host + ':' + ws_port + '/ws', undefined, options);
+// const rws = 'ws://' + ws_host + ':' + ws_port + '/ws';
+// rws.timeout = 1000;
 
 class App extends React.Component {
   constructor(props) {
@@ -25,27 +40,32 @@ class App extends React.Component {
     };
   }
 
-  ws = new WebSocket(URL)
+  // ws = new WebSocket(HOST)
 
   componentDidMount() {
-    this.ws.onopen = () => {
-      // on connecting, do nothing but log it to the console
-      console.log('connected')
-    }
+    // this.ws.onopen = () => {
+    //   // on connecting, do nothing but log it to the console
+    //   console.log('connected')
+    // }
 
-    this.ws.onmessage = evt => {
-      // on receiving a message, add it to the list of messages
-      const val = JSON.parse(evt.data)
-      this.addMessage(val)
-    }
+    rws.onopen = () => {
+        // on connecting, do nothing but log it to the console
+        console.log('connected')
+      }
 
-    this.ws.onclose = () => {
-      console.log('disconnected')
-      // automatically try to reconnect on connection loss
-      this.setState({
-        ws: new WebSocket(URL),
-      })
-    }
+    // this.ws.onmessage = evt => {
+    //   // on receiving a message, add it to the list of messages
+    //   const val = JSON.parse(evt.data)
+    //   this.addMessage(val)
+    // }
+
+    // this.ws.onclose = () => {
+    //   console.log('disconnected')
+    //   // automatically try to reconnect on connection loss
+    //   this.setState({
+    //     ws: new WebSocket(HOST),
+    //   })
+    // }
   }
 
   propTypes = {
@@ -66,6 +86,7 @@ class App extends React.Component {
   handleEqual = messageString => {
     let message1 = this.state.input + ' = ' + math.evaluate(this.state.input)
     const data = { name: this.state.name, message: message1 }
+    console.log(data);
     this.ws.send(JSON.stringify(data))
     this.setState(
       { input: message1,
