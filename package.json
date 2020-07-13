@@ -25,9 +25,9 @@
     "ws": "^7.3.1"
   },
   "scripts": {
-    
-    "start": "node server.js",
     "postinstall": "npm start",
+    "start": "node server.js",
+    
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
