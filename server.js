@@ -5,7 +5,7 @@ const WebSocket = require('ws');
 
 const { Server } = require('ws');
 const path = require('path');
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const INDEX = path.join('/App.js');
 
 const server = express()
