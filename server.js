@@ -6,7 +6,7 @@ const WebSocket = require('ws');
 const { Server } = require('ws');
 const path = require('path');
 const PORT = process.env.PORT || 3030;
-const INDEX = path.join('./App.js');
+const INDEX = path.join('/App.js');
 
 const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
