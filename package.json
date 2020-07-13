@@ -27,7 +27,6 @@
   "scripts": {
     "postinstall": "npm run build",
     "start": "node server.js",
-    // "heroku-postbuild": "npm install && npm run build && npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
