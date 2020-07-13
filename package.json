@@ -1,6 +1,7 @@
 {
   "name": "calculator",
   "version": "0.1.0",
+  "homepage": "https://calci-chat.herokuapp.com/",
   "engines": {
     "node": ">=8.3.0"
     },
