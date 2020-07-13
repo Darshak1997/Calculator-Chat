@@ -6,12 +6,13 @@ const WebSocket = require('ws');
 const { Server } = require('ws');
 const path = require('path');
 const PORT = (process.env.PORT, process.env.IP);
-console.log(process.env.PORT)
+console.log("Port Number: " + PORT)
 const INDEX = path.join('./src/App.js');
 
 const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+  .listen(process.env.PORT, process.env.IP)
+  // .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
   const wss = new Server({ server });
 
