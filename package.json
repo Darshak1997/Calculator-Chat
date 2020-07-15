@@ -4,7 +4,7 @@
   "homepage": "https://calci-chat.herokuapp.com/",
   "engines": {
     "node": ">=8.3.0"
-    },
+  },
   "_spec": "ws",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "html5-websocket": "^2.0.4",
     "mathjs": "^7.0.2",
+    "pickle": "^0.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.2.1",
@@ -25,7 +26,7 @@
     "ws": "^7.3.1"
   },
   "scripts": {
-    "start": "react-scripts start && node server.js",
+    "start": "react-scripts start",
     "predeploy": "npm run build",
     "build": "react-scripts build",
     "test": "react-scripts test",

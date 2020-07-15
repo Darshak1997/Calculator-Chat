@@ -8,19 +8,20 @@ import {Input} from './Component/Input';
 import {ClearButton} from './Component/ClearButton'
 import ChatMessage from './chatMessage'
 import * as math from 'mathjs';
-import PropTypes from 'prop-types'
-import Button from 'react-bootstrap/Button';
+import { element } from 'prop-types';
+// import PropTypes from 'prop-types'
+// import Button from 'react-bootstrap/Button';
 // import * as math from 'https://unpkg.com/mathjs@6.2.3/dist/math.js';
 
 // let HOST = window.location.origin.replace(/^http/, 'ws')
 // const Html5WebSocket = require('html5-websocket');
 // const ReconnectingWebSocket = require('reconnecting-websocket');
-let isServerLocal = false;
-let ws_host = 'https://calci-chat.herokuapp.com/';
-let ws_port = process.env.PORT || 80;
-if (isServerLocal == true) {
-    let ws_host = 'localhost';
-    let ws_port = '3030';
+let isServerLocal = true;
+// let ws_host = 'https://calci-chat.herokuapp.com/';
+// let ws_port = process.env.PORT || 80;
+if (isServerLocal) {
+    var ws_host = 'localhost';
+    var ws_port = '3030';
 }
 // const HOST = 'ws://localhost:3030'
 
@@ -38,7 +39,7 @@ class App extends React.Component {
       input: "",
       messages1: [],
       messages: [],
-
+      elements: [],
     };
   }
 
@@ -53,8 +54,10 @@ class App extends React.Component {
 
     rws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
+      console.log(JSON.parse(evt.data))
       const val = JSON.parse(evt.data)
-      this.addMessage(val)
+      val.forEach(element => this.addMessage(element));
+      // this.addMessage(val)
     }
 
     rws.onclose = () => {
@@ -75,19 +78,27 @@ class App extends React.Component {
   }
 
   addMessage = val => {
+    console.log("efvhbvk: ", JSON.parse(val))
+    console.log(this.state.elements)
     this.setState(
-      {messages1:  [val, ...this.state.messages1]}
+      {messages1:  [val, ...this.state.messages1],
+      elements: [JSON.parse(val), ...this.state.elements]
+      // elements: this.state.elements.add(JSON.parse(val))
+      }
       );
   }
 
   handleEqual = messageString => {
     let message1 = this.state.input + ' = ' + math.evaluate(this.state.input)
     const data = { name: this.state.name, message: message1 }
+    console.log("Handle Equal: ",JSON.stringify(data))
     rws.send(JSON.stringify(data))
+    this.componentDidMount()
     this.setState(
       { input: message1,
         messages:  [data, ...this.state.messages],
-        messages1:  [data, ...this.state.messages1]}
+        messages1:  [data, ...this.state.messages1],
+      }
       );
       
   }
@@ -149,15 +160,21 @@ class App extends React.Component {
                 </label>
           </form>
           </div>
-            {this.state.messages1.map((message, index) =>
-            <ChatMessage
+            {console.log("Console Log: ", this.state.elements)}
+            {this.state.elements.map((message, index) => 
+              <ChatMessage
               key={index}
+              message = {message.message}
+              name = {message.name} />,
+            )}
+            {/* {this.state.elements.forEach(message =>
+            // console.log(message.name),
+            <ChatMessage
+              key = {0}
               message={message.message}
               name={message.name}
             />,
-          )}
-        
-        
+          )} */}
         </div>
       </div>
     )
